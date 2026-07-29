@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="stylesheet" href="styles/styles.css" />
+
+    <title>User Manager app</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+  </head>
+  <body>
+    <main class="user-manager">
+      <h1>User Manager</h1>
+
+      <div class="user-search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" placeholder="Search users..." />
+      </div>
+
+      <form class="user-form">
+        <input type="text" placeholder="Name" />
+        <input type="email" placeholder="Email" />
+        <input type="text" placeholder="City" />
+
+        <button>Add User</button>
+      </form>
+
+      <h2>Users</h2>
+
+      <ul class="user-list"></ul>
+    </main>
+
+    <div class="loader-parent">
+      <span class="loader"></span>
+    </div>
+
+    <script src="javascript/app.js"></script>
+  </body>
+</html>
