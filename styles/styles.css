@@ -28,9 +28,19 @@ body {
 .user-search i {
   position: absolute;
   left: 18px;
-  top: 50%;
+  top: 25px;
   transform: translateY(-50%);
   color: #888;
+}
+
+.user-search p {
+  text-align: center;
+  font-size: 22px;
+  margin-top: 18px;
+  color: #3b82f6;
+  box-shadow: 0 0 10px #3b82f6;
+  border-radius: 10px;
+  display: none;
 }
 
 .user-search input {
