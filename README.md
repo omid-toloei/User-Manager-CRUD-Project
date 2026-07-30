@@ -10,6 +10,7 @@ A simple CRUD User Manager application built with HTML, CSS, and JavaScript. The
 - Clean and organized code structure
 - loader spinner
 - error handling
+- search by name, show result, count results
 
 ## Technologies
 
