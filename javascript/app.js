@@ -6,6 +6,9 @@ const loaderParent = document.querySelector(".loader-parent");
 
 const userList = document.querySelector(".user-list");
 
+const searchBox = document.querySelector("#searchBox");
+const showCountResult = document.querySelector("#showCountResult");
+
 /* =========================
 Global Variables
 ========================= */
@@ -17,6 +20,11 @@ let isLoading = false;
 /* =========================
 Event Listeners
 ========================= */
+
+searchBox.addEventListener("keyup", () => {
+  showCountResult.style.display = "none";
+  searchByName(users);
+});
 
 /* =========================
 API
@@ -114,6 +122,36 @@ function showUsers(array) {
   });
 
   userList.innerHTML = showUsersStructure;
+}
+
+function searchByName(array) {
+  let searchBoxValue = searchBox.value;
+
+  let searchResult = array.filter((object) => {
+    return object.name.includes(searchBoxValue);
+  });
+
+  switch (searchResult.length) {
+    case 0:
+      userList.innerHTML = `<li class="error-state">
+          <i class="fa-solid fa-circle-exclamation"></i>
+          <h3>No results found!</h3>
+        </li>`;
+      break;
+    case 1:
+      showCountResult.style.display = "block";
+      showCountResult.textContent = "1 result found";
+      showUsers(searchResult);
+      break;
+    case array.length:
+      showCountResult.style.display = "none";
+      showUsers(users);
+      break;
+    default:
+      showCountResult.style.display = "block";
+      showCountResult.innerHTML = `${searchResult.length} results`;
+      showUsers(searchResult);
+  }
 }
 
 /* =========================
