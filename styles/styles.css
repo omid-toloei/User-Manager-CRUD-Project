@@ -280,3 +280,24 @@ body {
     transform: scale(1) translate(-50%, -50%);
   }
 }
+
+.app-notification {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background-color: #e53935;
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 1000;
+  display: none;
+}
+
+.app-notification-close-icon {
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
