@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="icon" type="image/png" href="images/favicon.png" />
     <link rel="stylesheet" href="styles/styles.css" />
 
     <title>User Manager app</title>
@@ -31,12 +31,12 @@
         <p id="showCountResult"></p>
       </div>
 
-      <form class="user-form">
-        <input type="text" placeholder="Name" />
-        <input type="email" placeholder="Email" />
-        <input type="text" placeholder="City" />
+      <form class="user-form" id="newUserForm">
+        <input type="text" id="inputName" placeholder="Name" required />
+        <input type="email" id="inputEmail" placeholder="Email" required />
+        <input type="text" id="inputCity" placeholder="City" required />
 
-        <button>Add User</button>
+        <button type="submit" id="submitBtn">Add User</button>
       </form>
 
       <h2>Users</h2>
@@ -46,6 +46,11 @@
 
     <div class="loader-parent">
       <span class="loader"></span>
+    </div>
+
+    <div class="app-notification">
+      <span class="app-notification-close-icon">✖</span>
+      <span>Email already exists</span>
     </div>
 
     <script src="javascript/app.js"></script>
