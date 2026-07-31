@@ -11,6 +11,7 @@ A simple CRUD User Manager application built with HTML, CSS, and JavaScript. The
 - loader spinner
 - error handling
 - search by name, show result, count results
+- add and post new user info to api and show data
 
 ## Technologies
 
