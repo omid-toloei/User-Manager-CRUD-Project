@@ -3,11 +3,20 @@ DOM Elements
 ========================= */
 
 const loaderParent = document.querySelector(".loader-parent");
+const appNotification = document.querySelector(".app-notification");
+const appNotificationCloseIcon = document.querySelector(".app-notification-close-icon");
 
 const userList = document.querySelector(".user-list");
 
 const searchBox = document.querySelector("#searchBox");
 const showCountResult = document.querySelector("#showCountResult");
+
+// post form
+const newUserForm = document.querySelector("#newUserForm");
+const inputName = document.querySelector("#inputName");
+const inputEmail = document.querySelector("#inputEmail");
+const inputCity = document.querySelector("#inputCity");
+const submitBtn = document.querySelector("#submitBtn");
 
 /* =========================
 Global Variables
@@ -26,17 +35,29 @@ searchBox.addEventListener("keyup", () => {
   searchByName(users);
 });
 
+newUserForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+});
+
+submitBtn.addEventListener("click", () => {
+  createNewUser();
+});
+
+appNotificationCloseIcon.addEventListener("click", () => {
+  appNotification.style.display = "none";
+});
+
 /* =========================
 API
 ========================= */
 
-async function getFetchData(url) {
+async function request(url, options) {
   try {
     if (isLoading) return;
 
     showLoading("true");
 
-    let response = await fetch(url);
+    let response = await fetch(url, options);
 
     if (!response.ok) {
       throw response.status;
@@ -52,10 +73,44 @@ async function getFetchData(url) {
 }
 
 async function getUsers() {
-  let apiUsersResponse = await getFetchData(
+  let apiUsersResponse = await request(
     "https://jsonplaceholder.typicode.com/users",
   );
   users = apiUsersResponse;
+}
+
+async function createNewUser() {
+  const emailExists = users.some((user) => user.email == inputEmail.value);
+  if (emailExists) {
+    appNotification.style.display = "block";
+    inputName.value = "";
+    inputEmail.value = "";
+    inputCity.value = ""; 
+    return;
+  }
+
+  let newUser = {
+    name: inputName.value,
+    email: inputEmail.value,
+    address: {
+      city: inputCity.value,
+    },
+  };
+
+  let response = await request("https://jsonplaceholder.typicode.com/users", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(newUser),
+  });
+
+  users.push(response);
+  showUsers(users);
+
+  inputName.value = "";
+  inputEmail.value = "";
+  inputCity.value = "";
 }
 
 /* =========================
@@ -97,7 +152,7 @@ function showError(errorStatus, url) {
         </li>`;
   const retryBtn = document.querySelector(".retry-btn");
   retryBtn.addEventListener("click", () => {
-    getFetchData(url);
+    request(url);
   });
 }
 
