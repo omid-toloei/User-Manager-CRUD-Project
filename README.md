@@ -53,7 +53,3 @@ The application fetches users from the JSONPlaceholder API and provides a clean 
 This project uses the **JSONPlaceholder** API for demonstration purposes.
 
 > Since JSONPlaceholder is a fake REST API, created or deleted users are not permanently stored on the server.
-
-## Preview
-
-*Add screenshots or a GIF here.*
