@@ -201,29 +201,6 @@ body {
   font-size: 1.4rem;
 }
 
-.retry-btn {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 22px;
-  border: none;
-  border-radius: 12px;
-  background: #3b82f6;
-  color: white;
-  cursor: pointer;
-  font-size: 15px;
-  transition: 0.25s;
-}
-
-.retry-btn:hover {
-  background: #2563eb;
-}
-
-.retry-btn i {
-  font-size: 16px;
-  color: white;
-}
-
 .loader-parent {
   position: fixed;
   inset: 0;
@@ -285,7 +262,6 @@ body {
   position: fixed;
   top: 20px;
   left: 20px;
-  background-color: #e53935;
   color: #fff;
   padding: 12px 18px;
   border-radius: 8px;
@@ -293,7 +269,7 @@ body {
   align-items: center;
   gap: 8px;
   z-index: 1000;
-  display: none;
+  display: none ;
 }
 
 .app-notification-close-icon {
