@@ -4,7 +4,10 @@ DOM Elements
 
 const loaderParent = document.querySelector(".loader-parent");
 const appNotification = document.querySelector(".app-notification");
-const appNotificationCloseIcon = document.querySelector(".app-notification-close-icon");
+const appNotificationText = document.querySelector("#appNotificationText");
+const appNotificationCloseIcon = document.querySelector(
+  ".app-notification-close-icon",
+);
 
 const userList = document.querySelector(".user-list");
 
@@ -47,70 +50,120 @@ appNotificationCloseIcon.addEventListener("click", () => {
   appNotification.style.display = "none";
 });
 
+userList.addEventListener("click", (event) => {
+  const button = event.target.closest("button");
+  if (!button) return;
+
+  const userCard = event.target.closest(".user-card");
+  if (!userCard) return;
+
+  if (button.classList.contains("edit-button")) {
+    console.log(`Edit : ${userCard.dataset.userId}`);
+  }
+
+  if (button.classList.contains("delete-button")) {
+    deleteUser(userCard.dataset.userId);
+  }
+});
+
 /* =========================
 API
 ========================= */
 
 async function request(url, options) {
+  if (isLoading) return;
+
+  isLoading = true;
+  showLoading(isLoading);
+
   try {
-    if (isLoading) return;
-
-    showLoading("true");
-
     let response = await fetch(url, options);
 
     if (!response.ok) {
       throw response.status;
     }
 
-    let dataJson = await response.json();
-    return dataJson;
+    return response.json();
   } catch (error) {
-    showError(error, url);
+    if (error instanceof TypeError) {
+      throw "NETWORK_ERROR";
+    }
+    throw error;
   } finally {
-    showLoading("false");
+    isLoading = false;
+    showLoading(isLoading);
   }
 }
 
 async function getUsers() {
-  let apiUsersResponse = await request(
-    "https://jsonplaceholder.typicode.com/users",
-  );
-  users = apiUsersResponse;
+  try {
+    let apiUsersResponse = await request(
+      "https://jsonplaceholder.typicode.com/users",
+    );
+    users = apiUsersResponse;
+    return true;
+  } catch (error) {
+    showError(error);
+    return false;
+  }
 }
 
 async function createNewUser() {
-  const emailExists = users.some((user) => user.email == inputEmail.value);
-  if (emailExists) {
-    appNotification.style.display = "block";
-    inputName.value = "";
-    inputEmail.value = "";
-    inputCity.value = ""; 
+  if (inputName.value == "" || inputEmail.value == "" || inputCity.value == "")
     return;
+
+  try {
+    const emailExists = users.some((user) => user.email == inputEmail.value);
+    if (emailExists) {
+      clearInputs();
+      showNotification("Email already exists", "red", 3000);
+      return;
+    }
+
+    let newUser = {
+      name: inputName.value,
+      email: inputEmail.value,
+      address: {
+        city: inputCity.value,
+      },
+    };
+
+    let response = await request("https://jsonplaceholder.typicode.com/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newUser),
+    });
+
+    users.push(response);
+    showUsers(users);
+
+    clearInputs();
+
+    showNotification("User added successfully", "green", 3000);
+  } catch (error) {
+    showError(error);
   }
+}
 
-  let newUser = {
-    name: inputName.value,
-    email: inputEmail.value,
-    address: {
-      city: inputCity.value,
-    },
-  };
+async function deleteUser(userId) {
+  try {
+    await request(`https://jsonplaceholder.typicode.com/users/${userId}`, {
+      method: "DELETE",
+    });
 
-  let response = await request("https://jsonplaceholder.typicode.com/users", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(newUser),
-  });
+    const indexUserForDelete = users.findIndex((user) => user.id == userId);
 
-  users.push(response);
-  showUsers(users);
+    if (indexUserForDelete == -1) {
+      return;
+    }
 
-  inputName.value = "";
-  inputEmail.value = "";
-  inputCity.value = "";
+    users.splice(indexUserForDelete, 1);
+    showUsers(users);
+  } catch (error) {
+    showError(error);
+  }
 }
 
 /* =========================
@@ -118,14 +171,14 @@ Functions
 ========================= */
 
 function showLoading(status) {
-  if (status == "true") {
+  if (status) {
     loaderParent.style.display = "flex";
   } else {
     loaderParent.style.display = "none";
   }
 }
 
-function showError(errorStatus, url) {
+function showError(errorStatus) {
   let errorMessage = "";
 
   switch (errorStatus) {
@@ -138,28 +191,23 @@ function showError(errorStatus, url) {
     case 503:
       errorMessage = "The server is temporarily unavailable!";
       break;
+    case "NETWORK_ERROR":
+      errorMessage = "Please check your internet connection";
+      break;
     default:
-      errorMessage = "Something went wrong! please try again later...";
+      errorMessage = `Something went wrong (${errorStatus})! please try again later`;
   }
 
   userList.innerHTML = `<li class="error-state">
           <i class="fa-solid fa-circle-exclamation"></i>
           <h3>${errorMessage}</h3>
-          <button class="retry-btn">
-            <i class="fa-solid fa-rotate-right"></i>
-            Try Again
-          </button>
         </li>`;
-  const retryBtn = document.querySelector(".retry-btn");
-  retryBtn.addEventListener("click", () => {
-    request(url);
-  });
 }
 
 function showUsers(array) {
   let showUsersStructure = "";
   array.forEach((object) => {
-    showUsersStructure += `<li class="user-card">
+    showUsersStructure += `<li class="user-card" data-user-id="${object.id}">
           <div class="user-details">
             <h3>${object.name}</h3>
             <p>${object.email}</p>
@@ -209,12 +257,31 @@ function searchByName(array) {
   }
 }
 
+function clearInputs() {
+  inputName.value = "";
+  inputEmail.value = "";
+  inputCity.value = "";
+}
+
+function showNotification(message, backgroundColor, time) {
+  appNotification.style.display = "block";
+  appNotificationText.innerHTML = message;
+  appNotification.style.backgroundColor = backgroundColor;
+
+  setTimeout(() => {
+    appNotification.style.display = "none";
+  }, time);
+}
+
 /* =========================
 Render Functions
 ========================= */
 
 async function run() {
-  await getUsers();
+  const success = await getUsers();
+
+  if (!success) return;
+
   showUsers(users);
 }
 run();
