@@ -14,19 +14,27 @@ const userList = document.querySelector(".user-list");
 const searchBox = document.querySelector("#searchBox");
 const showCountResult = document.querySelector("#showCountResult");
 
-// post form
+// add new user form
 const newUserForm = document.querySelector("#newUserForm");
-const inputName = document.querySelector("#inputName");
-const inputEmail = document.querySelector("#inputEmail");
-const inputCity = document.querySelector("#inputCity");
-const submitBtn = document.querySelector("#submitBtn");
+const newUserInputName = document.querySelector("#newUserInputName");
+const newUserInputEmail = document.querySelector("#newUserInputEmail");
+const newUserInputCity = document.querySelector("#newUserInputCity");
+const newUserSubmitBtn = document.querySelector("#newUserSubmitBtn");
+
+// edit user form
+const editUserForm = document.querySelector("#editUserForm");
+const editUserInputName = document.querySelector("#editUserInputName");
+const editUserInputEmail = document.querySelector("#editUserInputEmail");
+const editUserInputCity = document.querySelector("#editUserInputCity");
+const editUserSubmitBtn = document.querySelector("#editUserSubmitBtn");
+const editUserCancelBtn = document.querySelector("#editUserCancelBtn");
 
 /* =========================
 Global Variables
 ========================= */
 
 let users = [];
-
+let editingUserId = null;
 let isLoading = false;
 
 /* =========================
@@ -42,7 +50,11 @@ newUserForm.addEventListener("submit", (event) => {
   event.preventDefault();
 });
 
-submitBtn.addEventListener("click", () => {
+editUserForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+});
+
+newUserSubmitBtn.addEventListener("click", () => {
   createNewUser();
 });
 
@@ -58,11 +70,26 @@ userList.addEventListener("click", (event) => {
   if (!userCard) return;
 
   if (button.classList.contains("edit-button")) {
-    console.log(`Edit : ${userCard.dataset.userId}`);
+    showEditForm(Number(userCard.dataset.userId));
   }
 
   if (button.classList.contains("delete-button")) {
     deleteUser(userCard.dataset.userId);
+  }
+});
+
+editUserCancelBtn.addEventListener("click", () => {
+  editUserForm.style.display = "none";
+  newUserForm.style.display = "flex";
+
+  clearInputs("editUserForm");
+});
+
+editUserSubmitBtn.addEventListener("click", () => {
+  if (validateEditForm()) {
+    editUser(editingUserId);
+  } else {
+    return;
   }
 });
 
@@ -109,22 +136,28 @@ async function getUsers() {
 }
 
 async function createNewUser() {
-  if (inputName.value == "" || inputEmail.value == "" || inputCity.value == "")
+  if (
+    newUserInputName.value == "" ||
+    newUserInputEmail.value == "" ||
+    newUserInputCity.value == ""
+  )
     return;
 
   try {
-    const emailExists = users.some((user) => user.email == inputEmail.value);
+    const emailExists = users.some(
+      (user) => user.email == newUserInputEmail.value,
+    );
     if (emailExists) {
-      clearInputs();
+      clearInputs("newUserForm");
       showNotification("Email already exists", "red", 3000);
       return;
     }
 
     let newUser = {
-      name: inputName.value,
-      email: inputEmail.value,
+      name: newUserInputName.value,
+      email: newUserInputEmail.value,
       address: {
-        city: inputCity.value,
+        city: newUserInputCity.value,
       },
     };
 
@@ -161,6 +194,42 @@ async function deleteUser(userId) {
 
     users.splice(indexUserForDelete, 1);
     showUsers(users);
+  } catch (error) {
+    showError(error);
+  }
+}
+
+async function editUser(userId) {
+  try {
+    let updatedUser = await request(
+      `https://jsonplaceholder.typicode.com/users/${userId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: editUserInputName.value,
+          email: editUserInputEmail.value,
+          address: {
+            city: editUserInputCity.value,
+          },
+        }),
+      },
+    );
+
+    updateUsersArray(updatedUser);
+
+    editUserForm.style.display = "none";
+    newUserForm.style.display = "flex";
+    
+    clearInputs("editUserForm");
+
+    showUsers(users);
+
+    showNotification("User successfully changed", "green", 3000);
+
+    editingUserId = null;
   } catch (error) {
     showError(error);
   }
@@ -257,10 +326,29 @@ function searchByName(array) {
   }
 }
 
-function clearInputs() {
-  inputName.value = "";
-  inputEmail.value = "";
-  inputCity.value = "";
+function clearInputs(form) {
+  if (form === "newUserForm") {
+    newUserInputName.value = "";
+    newUserInputEmail.value = "";
+    newUserInputCity.value = "";
+  } else if (form === "editUserForm") {
+    editUserInputName.value = "";
+    editUserInputEmail.value = "";
+    editUserInputCity.value = "";
+  }
+}
+
+function showEditForm(userId) {
+  editUserForm.style.display = "flex";
+  newUserForm.style.display = "none";
+
+  editingUserId = userId;
+
+  let user = users.find((user) => user.id == userId);
+
+  editUserInputName.value = user.name;
+  editUserInputEmail.value = user.email;
+  editUserInputCity.value = user.address.city;
 }
 
 function showNotification(message, backgroundColor, time) {
@@ -271,6 +359,36 @@ function showNotification(message, backgroundColor, time) {
   setTimeout(() => {
     appNotification.style.display = "none";
   }, time);
+}
+
+function validateEditForm() {
+  let userEditingIndex = users.findIndex((user) => user.id === editingUserId);
+  let usersWithoutEditingUser = users.filter(
+    (_, index) => index !== userEditingIndex,
+  );
+  let emailExists = usersWithoutEditingUser.some(
+    (user) => user.email == editUserInputEmail.value,
+  );
+  
+
+  if (
+    editUserInputName.value == "" ||
+    editUserInputEmail.value == "" ||
+    editUserInputCity.value == ""
+  ) {
+    showNotification("Input fields must not be empty", "red", 3000);
+    return false;
+  } else if (emailExists) {
+    showNotification("Email already exists", "red", 3000);
+    return false;
+  } else {
+    return true;
+  }
+}
+
+function updateUsersArray(updatedUser) {
+  let userIndex = users.findIndex(user => user.id === editingUserId);
+  users[userIndex] = updatedUser;
 }
 
 /* =========================
