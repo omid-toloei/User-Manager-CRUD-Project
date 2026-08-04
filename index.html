@@ -31,14 +31,27 @@
         <p id="showCountResult"></p>
       </div>
 
-      <form class="user-form" id="newUserForm">
-        <input type="text" id="inputName" placeholder="Name" required />
-        <input type="email" id="inputEmail" placeholder="Email" required />
-        <input type="text" id="inputCity" placeholder="City" required />
+      <form class="add-new-user-form" id="newUserForm">
+        <legend>Add new user</legend>
+        <input type="text" id="newUserInputName" placeholder="Name" required />
+        <input type="email" id="newUserInputEmail" placeholder="Email" required />
+        <input type="text" id="newUserInputCity" placeholder="City" required />
 
-        <button type="submit" id="submitBtn">Add User</button>
+        <button type="submit" id="newUserSubmitBtn">Add User</button>
       </form>
 
+      <form class="edit-user-form" id="editUserForm">
+        <legend>Edit user</legend>
+        <input type="text" id="editUserInputName" placeholder="Name" required />
+        <input type="email" id="editUserInputEmail" placeholder="Email" required />
+        <input type="text" id="editUserInputCity" placeholder="City" required />
+
+        <div>
+          <button type="submit" class="save-form-btn" id="editUserSubmitBtn">Save</button>
+          <button class="cancel-form-btn" id="editUserCancelBtn">Cancel</button>
+        </div>
+      </form>
+      
       <h2>Users</h2>
 
       <ul class="user-list"></ul>
