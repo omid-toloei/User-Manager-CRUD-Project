@@ -24,18 +24,6 @@ The application communicates with the **JSONPlaceholder API** using the Fetch AP
 
 ---
 
-## 🛠️ Technologies Used
-
-* HTML5
-* CSS3
-* Vanilla JavaScript (ES6+)
-* Fetch API
-* Async / Await
-* JSONPlaceholder REST API
-
----
-
----
 
 ## 🌐 API
 
@@ -60,3 +48,14 @@ https://jsonplaceholder.typicode.com/users
 * Responsive UI Development
 
 ---
+
+## 📷Demo
+
+<div align="center">
+  <img scr="assets/demo/demo1.png" alt="project demo">
+  <img scr="assets/demo/demo2.png" alt="project demo">
+  <img scr="assets/demo/demo3.png" alt="project demo">
+  <img scr="assets/demo/demo4.png" alt="project demo">
+  <img scr="assets/demo/demo5.png" alt="project demo">
+  <img scr="assets/demo/demo6.png" alt="project demo">
+</div>
