@@ -52,10 +52,10 @@ https://jsonplaceholder.typicode.com/users
 ## 📷Demo
 
 <div align="center">
-  <img scr="assets/demo/demo1.png" alt="project demo">
-  <img scr="assets/demo/demo2.png" alt="project demo">
-  <img scr="assets/demo/demo3.png" alt="project demo">
-  <img scr="assets/demo/demo4.png" alt="project demo">
-  <img scr="assets/demo/demo5.png" alt="project demo">
-  <img scr="assets/demo/demo6.png" alt="project demo">
+  <img src="assets/demo/demo1.png" alt="project demo 1">
+  <img src="assets/demo/demo2.png" alt="project demo 2">
+  <img src="assets/demo/demo3.png" alt="project demo 3">
+  <img src="assets/demo/demo4.png" alt="project demo 4">
+  <img src="assets/demo/demo5.png" alt="project demo 5">
+  <img src="assets/demo/demo6.png" alt="project demo 6">
 </div>
