@@ -1,3 +1,24 @@
+:root {
+  --color-primary-background: #0f0f0f;
+
+  --color-primary: #3b82f6;
+  --color-primary-hover: #2563eb;
+
+  --color-primary-gray: #1a1a1a;
+  --color-primary-gray-border: #2b2b2b;
+
+  --color-primary-white: #fff;
+  --color-primary-black: #000;
+  
+  --color-primary-danger: #ef4444;
+  
+  --color-primary-green: #159b46;
+  --color-primary-green-hover: #08722f;
+
+  --color-primary-red: #dc2626;
+  --color-primary-red-hover: #a70f0f;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -5,8 +26,8 @@
 }
 
 body {
-  background: #0f0f0f;
-  color: white;
+  background: var(--color-primary-background);
+  color: var(--color-primary-white);
   font-family: Vazirmatn, sans-serif;
 }
 
@@ -37,8 +58,8 @@ body {
   text-align: center;
   font-size: 22px;
   margin-top: 18px;
-  color: #3b82f6;
-  box-shadow: 0 0 10px #3b82f6;
+  color: var(--color-primary);
+  box-shadow: 0 0 10px var(--color-primary);
   border-radius: 10px;
   display: none;
 }
@@ -46,9 +67,9 @@ body {
 .user-search input {
   width: 100%;
   height: 52px;
-  background: #1a1a1a;
-  color: white;
-  border: 1px solid #2b2b2b;
+  background: var(--color-primary-gray);
+  color: var(--color-primary-white);
+  border: 1px solid var(--color-primary-gray-border);
   border-radius: 12px;
   padding-left: 48px;
   padding-right: 15px;
@@ -57,7 +78,7 @@ body {
 }
 
 .user-search input:focus {
-  border-color: #3b82f6;
+  border-color: var(--color-primary);
   box-shadow: 0 0 12px rgba(59, 130, 246, 0.35);
 }
 
@@ -80,50 +101,48 @@ form legend {
 
 form input {
   height: 50px;
-  background: #1a1a1a;
-  border: 1px solid #2b2b2b;
+  background: var(--color-primary-gray);
+  border: 1px solid var(--color-primary-gray-border);
   border-radius: 12px;
-  color: white;
+  color: var(--color-primary-white);
   padding: 0 15px;
   outline: none;
   transition: 0.3s;
 }
 
 form input:focus {
-  border-color: #3b82f6;
+  border-color: var(--color-primary);
 }
 
 form button {
   height: 50px;
   border: none;
   border-radius: 12px;
-  background: #3b82f6;
-  color: white;
+  background: var(--color-primary);
+  color: var(--color-primary-white);
   font-size: 16px;
   cursor: pointer;
   transition: 0.3s;
   width: 100%;
+} form button:hover {
+  background: var(--color-primary-hover);
 }
 
 .save-form-btn {
-  background-color: #159b46;
+  background-color: var(--color-primary-green);
 } .save-form-btn:hover {
-  background-color: #08722f;
+  background-color: var(--color-primary-green-hover);
 }
 
 .cancel-form-btn {
-  background-color: #d12525;
+  background-color: var(--color-primary-red);
 } .cancel-form-btn:hover {
-  background-color: #9b0f0f;
+  background-color: var(--color-primary-red-hover);
 }
 
 .edit-user-form div {
   display: flex;
   gap: 15px;
-}
-
-form button:hover {
-  background: #2563eb;
 }
 
 .user-list {
@@ -134,8 +153,8 @@ form button:hover {
 }
 
 .user-card {
-  background: #1a1a1a;
-  border: 1px solid #262626;
+  background: var(--color-primary-gray);
+  border: 1px solid var(--color-primary-gray-border);
   border-radius: 16px;
   padding: 20px;
   display: flex;
@@ -146,8 +165,7 @@ form button:hover {
 
 .user-card:hover {
   transform: translateY(-3px);
-  border-color: #3b82f6;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+  border-color: var(--color-primary);
 }
 
 .user-details h3 {
@@ -160,7 +178,7 @@ form button:hover {
 }
 
 .user-details span {
-  color: #3b82f6;
+  color: var(--color-primary);
   font-size: 0.9rem;
 }
 
@@ -174,7 +192,7 @@ form button:hover {
   height: 42px;
   border: none;
   border-radius: 50%;
-  color: white;
+  color: var(--color-primary-white);
   cursor: pointer;
   transition: 0.3s;
 }
@@ -188,11 +206,11 @@ form button:hover {
 }
 
 .delete-button {
-  background: #dc2626;
+  background: var(--color-primary-red);
 }
 
 .delete-button:hover {
-  background: #b91c1c;
+  background: var(--color-primary-red-hover);
 }
 
 @media (max-width: 600px) {
@@ -209,8 +227,8 @@ form button:hover {
 
 .error-state {
   list-style: none;
-  background: #1a1a1a;
-  border: 1px solid #2b2b2b;
+  background: var(--color-primary-gray);
+  border: 1px solid var(--color-primary-gray-border);
   border-radius: 18px;
   padding: 40px 25px;
   display: flex;
@@ -222,7 +240,7 @@ form button:hover {
 
 .error-state i {
   font-size: 48px;
-  color: #ef4444;
+  color: var(--color-primary-danger);
 }
 
 .error-state h3 {
@@ -232,14 +250,14 @@ form button:hover {
 .loader-parent {
   position: fixed;
   inset: 0;
-  background-color: #1a1a1a;
+  background-color: var(--color-primary-gray);
   display: none;
   align-items: center;
 }
 
 .loader {
-  --color-1: #fff;
-  --color-2: #3b82f6;
+  --color-1: var(--color-primary-white);
+  --color-2: var(--color-primary);
   --size: 1px;
 
   width: calc(48 * var(--size));
@@ -290,7 +308,7 @@ form button:hover {
   position: fixed;
   top: 20px;
   left: 20px;
-  color: #fff;
+  color: var(--color-primary-white);
   padding: 12px 18px;
   border-radius: 8px;
   display: flex;
